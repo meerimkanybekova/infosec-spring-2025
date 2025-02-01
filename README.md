@@ -1,1 +1,1 @@
-# -infosec-spring-2025
+# infosec-spring-2025
