@@ -1,0 +1,26 @@
+gg  - moves the cursor to the very beginning of the file.
+G - jumps to the end of the file.
+w - moves the cursor to the beginning of the next word.
+b - moves it to the beginning of the previous word.
+Ctrl + f scrolls forward a page, and Ctrl + b scrolls backward.
+yy - copies the current line.
+dd - deletes the current line.
+p - pastes the copied or deleted content after the cursor. P pastes before.
+cw - changes from the cursor position to the end of the word.
+cc - replaces the entire current line.
+J - joins the current line with the next one.
+/pattern - searches forward for a given pattern.
+?pattern - searches backward.
+n - repeats the search in the same direction, and N in the opposite direction.
+:%s/old/new/g - replaces all occurrences of "old" with "new" in the entire file.
+:s/old/new/g - applies the replacement to just the current line.
+:split filename - opens a file in a new horizontal split.
+:vsplit filename - opens a file in a vertical split.
+:tabnew - opens a new tab.
+:tabnext (or :tabn) and :tabprev (or :tabp) navigate between tabs.
+:set number (or :set nu) - shows line numbers.
+:set nonumber - hides them.
+:syntax on - enables syntax highlighting (assuming Vim was compiled with support for it).
+:noh - clears the highlighted search results.
+:r !command - inserts the output of a shell command directly into the file.
+:help opens - Vim’s built-in help documentation. For example, :help :s provides details on the substitute command.
